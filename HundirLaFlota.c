@@ -5,6 +5,7 @@
 #define NUMBARCOS2 2
 #define NUMBARCOS3 1
 
+void cabezera();
 int menu();
 void hundirLaFlota(int opcion, int f,  int c);
 void colocarBarcosManualmente(int *t, int f, int c);
@@ -26,8 +27,41 @@ int main(int argc, char *argv[]){
 //				--- lee las filas y las columnas del tablero
 //				--- mientras la opción leída no sea 3, juega al hundir la flota 
 	
+		if (argc != 3)
+		{
+			printf("Los argumentos dados son incorrectos o insuficientes\n");
+			exit(-1);
+		}
+		int opcion;	
+		int filas = atoi(argv[1]);
+		int columnas = atoi(argv[2]);
+
+		cabezera();
+
+	do{
+		opcion = menu();
+		hundirLaFlota(opcion, filas, columnas);
+	} while (opcion!=3);
 
 	return 0;
+}
+
+void cabezera(){
+
+		printf("\t\t\t      ╔╦═╦╦╦═════════╦╦╦╦══════╗\n");
+		printf("\t\t\t      ║║ ╩╬╬═╦═╦╦╦═╦═╬╬╝╠═╗╔═╦╗║\n");
+		printf("\t\t\t      ║║  ║║╩╣║║║║╩╣║║║║║║║╠╝╠╣║\n");
+		printf("\t\t\t      ║╚══╩╩═╩╩╩═╩═╩╩╩╩═╩═╝╚═╩╝║\n");
+		printf("\t\t\t      ╚════════════════════════╝\n");
+		printf("\t\t\t   ╔╦╗╔╦═════╦╦╦══╦╦══╦═╦╦══╦╦═══╗\n");
+		printf("\t\t\t   ║║╚╝╠╗╔╦═╦╝╠╬═╗║╠═╗║═╣╠═╦╣╠╦═╗║\n");
+		printf("\t\t\t   ║║╔╗║╚╝║║║║║║╠╝║╠╝║║╔╣║║╠╗╔╬╝║║\n");
+		printf("\t\t\t   ║╚╝╚╩══╩╩╩═╩╩╝.╚╩═╝╚╝╚╩═╝╚═╩═╝║\n");
+		printf("\t\t\t   ╚═════════════════════════════╝\n");
+		for (int i = 0; i < 4; ++i)
+		{
+			printf("\n");
+		}
 }
 
 int menu(){
@@ -35,7 +69,28 @@ int menu(){
 //	- INPUTS: nada
 //	- OUTPUTS: la opción leída (1, 2 ó 3)
 //  - Presenta el menú por pantalla y lee una opción. Si no es 1, 2 ó 3 da un mensaje de error y vuelve a leerla hasta que sea correcta.
-	
+	int opcion;
+
+	do
+	{
+		printf("\t\t\t\t¿Que quieres hacer?\n\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n");
+		printf("\t//\t\t\t[1] Juego manual\t\t\t//\n");
+		printf("\t//\t\t\t[1] Juego automatico\t\t\t//\n");
+		printf("\t//\t\t\t[3] Salir\t\t\t\t//\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n\n");
+		scanf("%d", &opcion);
+
+		if (opcion < 1 || opcion > 3)
+		{
+			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
+		}
+
+	} while (opcion < 1 && opcion > 3);
+
+
+	return opcion;
+
 }
 
 void hundirLaFlota(int opcion, int f,  int c){
@@ -43,6 +98,21 @@ void hundirLaFlota(int opcion, int f,  int c){
 //	- INPUTS: opción (1, 2 ó 3), filas y columnas del tablero
 //  - OUTPUTS: nada
 //  - Según la opción leída llama a jugar manual (opción 1), jugar automático (opción 2) o muestra un mensaje de fin (opción 3)
+
+	switch (opcion){
+
+		case 1:
+			juegoManual(f,c);
+			break;
+
+		case 2:
+			juegoAutomatico(f,c);
+			break;
+
+		case 3:
+			printf("Gracias por jugar!\n");
+			break;
+	}
 
 
 }	

@@ -76,7 +76,7 @@ int menu(){
 		printf("\t\t\t\t¿Que quieres hacer?\n\n");
 		printf("\t//////////////////////////////////////////////////////////////////\n");
 		printf("\t//\t\t\t[1] Juego manual\t\t\t//\n");
-		printf("\t//\t\t\t[1] Juego automatico\t\t\t//\n");
+		printf("\t//\t\t\t[2] Juego automatico\t\t\t//\n");
 		printf("\t//\t\t\t[3] Salir\t\t\t\t//\n");
 		printf("\t//////////////////////////////////////////////////////////////////\n\n");
 		scanf("%d", &opcion);
@@ -110,7 +110,7 @@ void hundirLaFlota(int opcion, int f,  int c){
 			break;
 
 		case 3:
-			printf("Gracias por jugar!\n");
+			printf("Gracias por jugar!\n"); 
 			break;
 	}
 
@@ -126,6 +126,56 @@ void juegoManual(int f, int c){
 //		-- Por turnos, cada jugador elige una fila y columna de 1 al número de filas y de 1 al número de columnas. Se comprueba si hay barco indicando agua o tocado (se indica por pantalla).
 //		-- Se comprueba si hay ganador. Si lo hay acaba la partida indicando quíén ha ganado por pantalla
 //		-- EXTRA: comprobar que no se ha repetido ese disparo
+	int opcion;
+
+	int* tableroOcultoA;
+	tableroOcultoA = (int*)malloc(sizeof(int)*f*c);
+
+	int* tableroMostradoA;
+	tableroMostradoA = (int*)malloc(sizeof(int)*f*c);
+
+	int* tableroOcultoB;
+	tableroOcultoB = (int*)malloc(sizeof(int)*f*c);
+
+	int* tableroMostradoB;
+	tableroMostradoB = (int*)malloc(sizeof(int)*f*c);
+
+	do{
+		printf("\t\t\t   ¿Como quieres colocar los barcos?\n\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n");
+		printf("\t//\t\t\t[1] De forma manual\t\t\t//\n");
+		printf("\t//\t\t\t[2] De forma automatica\t\t\t//\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n\n");
+	
+		scanf("%d", &opcion);
+
+		if (opcion < 1 || opcion > 2){
+			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
+		}
+
+	} while (opcion < 1 && opcion > 2);
+
+	inicializarTablero(tableroOcultoA, f, c);
+	inicializarTablero(tableroOcultoB, f, c);
+	inicializarTablero(tableroMostradoA, f, c);
+	inicializarTablero(tableroMostradoB, f, c);
+
+	imprimirTablero(tableroOcultoA, f, c);
+
+	if (opcion == 1){
+		colocarBarcosManualmente(tableroOcultoA, f, c);
+		colocarBarcosAutomaticamente(tableroOcultoB, f, c);
+	}
+
+	if (opcion == 2){
+		colocarBarcosAutomaticamente(tableroOcultoA, f, c);
+		colocarBarcosAutomaticamente(tableroOcultoB, f, c);
+	}
+
+	free(tableroMostradoA);
+	free(tableroMostradoB);
+	free(tableroOcultoA);
+	free(tableroOcultoB);
 
 }
 void juegoAutomatico(int f, int c){
@@ -153,8 +203,99 @@ void inicializarTablero(int *t, int f, int c){
 //	- columnas
 //OUTPUS: nada
 //Inicializa a 0 la tabla
-	
-	return;
+
+	for (int i = 0; i < f; ++i)
+		{
+			for (int j = 0; j < c; ++j)
+			{
+				*(t+i*c+j) = 0;
+			}
+		}	
+
+}
+
+void imprimirTablero(int *t, int f, int c){
+//Funcion imprimirTablero
+//INPUTS:
+//	- puntero a un tablero (barcos, tiradas o lo que sea)
+//	- filas
+//	- columnas
+//OUTPUTS: nada
+//Muestra por pantalla el tabler dado
+
+	//Imprime la cabezera de las columnas
+	printf("\n\n");
+	for (int i = 0; i < 8; ++i){
+		printf(" ");
+	}
+	for (int i = 0; i < (c*8)-6; ++i){
+		printf("=");
+	}
+	printf("\n");
+
+	for (int i = 0; i < 8; ++i){
+		printf(" ");
+	}
+
+	printf("|1\t");
+
+	for (int i = 1; i < c-1; ++i){
+		printf("%d\t", i+1);
+	}
+
+	printf("%d|\n", c);
+
+	for (int i = 0; i < 8; ++i){
+		printf(" ");
+	}
+	for (int i = 0; i < (c*8)-6; ++i){
+		printf("=");
+	}
+	printf("\n");
+
+	//Imprime el tablero
+	for (int i = 0; i < f; ++i){
+
+		printf("\t|%d", *(t+i*c));
+		for (int j = 1; j < c; ++j){
+
+			printf("\t%d", *(t+i*c+j));
+		}
+		if (f < 10){
+		printf(" |%d|\n", i+1);
+		}else if(f > 10){
+		
+			if (i+1 < 10){
+				printf(" | %d|\n", i+1);
+			}else{
+				printf(" |%d|\n", i+1);
+			}
+		}
+
+		if (i < f-1 && f <10){
+			printf("\t|");
+			for (int k = 0; k < c-1; ++k){
+				printf("\t");
+			}
+			printf("  | |\n");
+		}else if (i < f-1 && f > 10){
+			printf("\t|");
+			for (int k = 0; k < c-1; ++k){
+				printf("\t");
+			}
+			printf("  |  |\n");
+		}		
+	}
+
+	//Imprime el cierre del marco
+	for (int i = 0; i < 8; ++i){
+		printf(" ");
+	}
+	for (int i = 0; i < (c*8)-6; ++i){
+		printf("=");
+	}
+	printf("\n\n");
+
 }
 
 void imprimirTableroArchivo(int *t, int f, int c, FILE *pa){

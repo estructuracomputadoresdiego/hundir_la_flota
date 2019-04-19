@@ -27,14 +27,18 @@ int main(int argc, char *argv[]){
 //				--- lee las filas y las columnas del tablero
 //				--- mientras la opción leída no sea 3, juega al hundir la flota 
 	
-		if (argc != 3)
-		{
-			printf("Los argumentos dados son incorrectos o insuficientes\n");
+		if (argc != 3){
+			printf("Los argumentos dados son insuficientes\n");
 			exit(-1);
 		}
 		int opcion;	
 		int filas = atoi(argv[1]);
 		int columnas = atoi(argv[2]);
+
+		if (filas < 5 || columnas < 5){
+			printf("El tablero necesita ser de 5x5 minimo\n");
+			exit(-1);
+		}
 
 		cabezera();
 
@@ -165,9 +169,7 @@ void juegoManual(int f, int c){
 	if (opcion == 1){
 		colocarBarcosManualmente(tableroOcultoA, f, c);
 		colocarBarcosAutomaticamente(tableroOcultoB, f, c);
-	}
-
-	if (opcion == 2){
+	}else if (opcion == 2){
 		colocarBarcosAutomaticamente(tableroOcultoA, f, c);
 		colocarBarcosAutomaticamente(tableroOcultoB, f, c);
 	}
@@ -369,7 +371,88 @@ void colocarBarcosManualmente(int *t, int f, int c){
 //OUTPUTS: nada
 //Coloca de forma manual 4 barcos de 1 posición, 2 de 2 posiciones y 1 de 3 posiciones en el tablero
 
+	int barcos1 = NUMBARCOS1;
+	int barcos2 = NUMBARCOS2;
+	int barcos3 = NUMBARCOS3;
+	int filaColocar;
+	int columnaColocar;
+	int barcoColocar;
+	int orientacion;
 
+	do{
+		printf("\t\t\t   ¿Que tipo de barco quieres colocar?\n\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n");
+		printf("\t//\t\t[1] Barco de 1 posiciones. Restantes:[%d]\t//\n", barcos1);
+		printf("\t//\t\t[2] Barco de 2 posiciones. Restantes:[%d]\t//\n", barcos2);
+		printf("\t//\t\t[3] Barco de 3 posiciones. Restantes:[%d]\t//\n", barcos3);
+		printf("\t//////////////////////////////////////////////////////////////////\n\n");
+		scanf("%d", &barcoColocar);
 
+		switch (barcoColocar){
+
+			case 1:
+				if (barcos1 > 0){
+					printf("¿En que fila quieres colocar e barco?\n");
+					scanf("%d", &filaColocar);
+					filaColocar --;
+					printf("¿En que columna quieres colocar el barco?\n");
+					scanf("%d", &columnaColocar);
+					columnaColocar --;
+					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 1, orientacion) == 1){
+						
+					}else{
+						printf("El barco no cabe en esa posicion\n");
+					}
+				barcos1 --;
+				}else{
+					printf("No hay mas barcos de ese ese tipo disponibles\n");
+				}
+				break;
+			case 2:
+				if (barcos2 > 0){
+					printf("¿En que fila quieres colocar e barco?\n");
+					scanf("%d", &filaColocar);
+					filaColocar --;
+					printf("¿En que columna quieres colocar el barco?\n");
+					scanf("%d", &columnaColocar);
+					columnaColocar --;
+					printf("¿Como quieres orientarlos?\n[0] Horizontal\n[1] Vertical");
+					scanf("%d", &orientacion);
+					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 2, orientacion) == 1){
+						
+					}else{
+						printf("El barco no cabe en esa posicion\n");
+					}
+					barcos2 --;
+				}else{
+					printf("No hay mas barcos de ese ese tipo disponibles\n");
+				}	
+					break;
+			case 3:
+				if (barcos3 > 0){
+					printf("¿En que fila quieres colocar e barco?\n");
+					scanf("%d", &filaColocar);
+					filaColocar --;
+					printf("¿En que columna quieres colocar el barco?\n");
+					scanf("%d", &columnaColocar);
+					columnaColocar --;
+					printf("¿Como quieres orientarlos?\n");
+					scanf("%d", &orientacion);
+					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 3, orientacion) == 1){
+						/* code */
+					}else{
+						printf("El barco no cabe en esa posicion\n");
+					}
+				barcos3 --;
+				}else{
+					printf("No hay mas barcos de ese ese tipo disponibles\n");
+				}
+				break;
+
+			default:
+				printf("Porfavor, introduzca una de las opciones dadas\n");
+		}
+
+	} while (barcos1 != 0 || barcos2 != 0 || barcos3 != 0);
 
  }

@@ -15,7 +15,7 @@ void imprimirTablero(char *t, int f, int c);
 void imprimirTableroArchivo(char *t, int f, int c, FILE *pa);
 int comprobacionEspacioParaBarco(char *t, int f, int c, int iniFila, int iniCol, int tamBarco, int orientacion);
 int compruebaGanador (char *b, int f, int c);
-int compruebaDisparo(char *t, int f, int c, int posFila, int posCol);
+char compruebaDisparo(char *t, int f, int c, int posFila, int posCol);
 void juegoManual(int f, int c);
 void juegoAutomatico(int f, int c);
 int compruebaDisparoRepetido(char *b, int f, int c, int posFila, int posCol);
@@ -77,8 +77,7 @@ int menu(){
 //  - Presenta el menú por pantalla y lee una opción. Si no es 1, 2 ó 3 da un mensaje de error y vuelve a leerla hasta que sea correcta.
 	int opcion;
 
-	do
-	{
+	do{
 		printf("\t\t\t\t¿Que quieres hacer?\n\n");
 		printf("\t//////////////////////////////////////////////////////////////////\n");
 		printf("\t//\t\t\t[1] Juego manual\t\t\t//\n");
@@ -131,7 +130,7 @@ void juegoManual(int f, int c){
 //		-- Por turnos, cada jugador elige una fila y columna de 1 al número de filas y de 1 al número de columnas. Se comprueba si hay barco indicando agua o tocado (se indica por pantalla).
 //		-- Se comprueba si hay ganador. Si lo hay acaba la partida indicando quíén ha ganado por pantalla
 //		-- EXTRA: comprobar que no se ha repetido ese disparo
-	int opcion, filaDisparo, columnaDisparo;
+	int opcion, filaDisparo, columnaDisparo, repetir;
 	char casillaDisparo;
 	int barcos1A, barcos1B, barcos2A, barcos2B, barcos3A, barcos3B;
 	barcos1A = barcos1B = NUMBARCOS1;
@@ -180,12 +179,15 @@ void juegoManual(int f, int c){
 		colocarBarcosAutomaticamente(tableroOcultoB, f, c);
 	}
 
+	printf("Resultado de comprobar ganador en tablero oculto A = %d\n", compruebaGanador(tableroOcultoA, f, c));
+
 	printf("Ya hemos colocado los barcos, procedamos a hundirlos\n");
 
 	do{
 
 		//Tirada jugador
 		do{
+			repetir = 0;
 			printf("\tJUGADOR 1\n");
 			printf("¿A que fila quieres disparar?\n");
 			scanf("%d", &filaDisparo);
@@ -220,19 +222,22 @@ void juegoManual(int f, int c){
 			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
 
 				printf("Ese disparo ya se ha realizado. ¡Deja en paz a esa pobre casilla!\n");
+				repetir = 1;
 			}else{
 				
 				printf("¡VAS A DESTRUIR LA TERMINAL, APUNTA DENTRO DEL TABLERO!\n");
+				repetir = 1;
 			}
 			imprimirTablero(tableroMostradoA, f, c);
-		} while (filaDisparo > f && filaDisparo < 0 && columnaDisparo > c && columnaDisparo < 0 && compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0);
+		} while (repetir == 1);
 		
 		//Tirada maquina
 		do{
+			repetir = 0;
 			printf("\tJUGADOR 2\n");
 			filaDisparo = rand()%f;
 			columnaDisparo = rand()%c;
-			if (compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 1 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+			if (compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 1){
 				
 				*(tableroMostradoB+filaDisparo*c+columnaDisparo) = compruebaDisparo(tableroOcultoA, f, c, filaDisparo, columnaDisparo);
 				casillaDisparo = compruebaDisparo(tableroOcultoA, f, c, filaDisparo, columnaDisparo);
@@ -254,22 +259,19 @@ void juegoManual(int f, int c){
 					case '3':
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
 						break;
+				imprimirTablero(tableroMostradoB, f, c);
 				}
-			}else if(compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 0 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0){
 
-				printf("Ese disparo ya se ha realizado. ¡Deja en paz a esa pobre casilla!\n");
-			}else{
-				
-				printf("¡VAS A DESTRUIR LA TERMINAL, APUNTA DENTRO DEL TABLERO!\n");
+				repetir = 1;
 			}
-			imprimirTablero(tableroMostradoB, f, c);
-		} while (filaDisparo > f && filaDisparo < 0 && columnaDisparo > c && columnaDisparo < 0 && compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 0);
+		} while (repetir == 1);
 
 	} while (compruebaGanador(tableroMostradoA, f, c) != 0 && compruebaGanador(tableroMostradoB, f, c) != 0);
 
 	if (compruebaGanador(tableroMostradoA, f, c) == 0){
 		printf("¡HA GANADO EL JUGADOR 1!\n");
-	}else if (compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 0){
+	}else if (compruebaGanador(tableroMostradoB, f, c) == 0){
 		printf("¡HA GANADO EL JUGADOR 2!\n");
 	}
 
@@ -422,8 +424,8 @@ int salida, barcos1, barcos2, barcos3;
 char casilla;
 salida = 1;
 barcos1 = NUMBARCOS1;
-barcos2 = NUMBARCOS2;
-barcos3 = NUMBARCOS3;
+barcos2 = NUMBARCOS2*2;
+barcos3 = NUMBARCOS3*3;
 
 	for (int i = 0; i < f; ++i){
 		for (int j = 0; j < c; ++j){
@@ -448,7 +450,7 @@ barcos3 = NUMBARCOS3;
 	return salida;
 }
 
-int compruebaDisparo(char *t, int f, int c, int posFila, int posCol){
+ char compruebaDisparo(char *t, int f, int c, int posFila, int posCol){
 //Función compruebaDisparo
 //INPUTS:
 //	- tablero de barcos
@@ -457,7 +459,7 @@ int compruebaDisparo(char *t, int f, int c, int posFila, int posCol){
 //	- tiro (fila y columna)
 //OUTPUTS: 0 si agua, 1 si hay un barco de 1, 2 si hay un barco de 2, 3 si hay un barco de 3
 
-	int salida;
+	char salida;
 	
 	salida = *(t+posFila*c+posCol);
 

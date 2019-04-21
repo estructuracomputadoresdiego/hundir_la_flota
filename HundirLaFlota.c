@@ -5,6 +5,7 @@
 #define NUMBARCOS2 2
 #define NUMBARCOS3 1
 
+
 void cabecera();
 int menu();
 void hundirLaFlota(int opcion, int f,  int c);
@@ -271,12 +272,12 @@ void juegoManual(int f, int c){
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
 						break;
 				}
-				turno++;
 
 				fprintf(archivo, "\tTURNO %d JUGADOR 2\n", turno);		
 				imprimirDisparoArchivo(tableroMostradoB, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoB, f, c, archivo);
 				imprimirTablero(tableroMostradoB, f, c);
+				turno++;
 			}else{
 
 				repetir = 1;
@@ -413,12 +414,12 @@ void juegoAutomatico(int f, int c){
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
 						break;
 				}
-				turno++;
 
 				fprintf(archivo, "\tTURNO %d JUGADOR 2\n", turno);
 				imprimirDisparoArchivo(tableroMostradoB, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoB, f, c, archivo);
 				imprimirTablero(tableroMostradoB, f, c);
+				turno++;
 			}else{
 
 				repetir = 1;

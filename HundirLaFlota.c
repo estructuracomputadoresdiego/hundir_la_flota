@@ -259,13 +259,13 @@ void juegoManual(int f, int c){
 						break;
 				}
 				imprimirTablero(tableroMostradoB, f, c);
-			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0){
+			}else{
 
 				repetir = 1;
 			}
 		} while (repetir == 1);
 
-	} while (compruebaGanador(tableroMostradoA, f, c) != 0 && compruebaGanador(tableroMostradoB, f, c) != 0);
+	} while (compruebaGanador(tableroMostradoA, f, c) == 1 && compruebaGanador(tableroMostradoB, f, c) == 1);
 
 	if (compruebaGanador(tableroMostradoA, f, c) == 0){
 		printf("¡HA GANADO EL JUGADOR 1!\n");
@@ -342,10 +342,10 @@ void juegoAutomatico(int f, int c){
 
 					case '3':
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
-						break;
+						break;	repetir = 1;
 				}
 				imprimirTablero(tableroMostradoA, f, c);
-			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0){
+			}else{
 
 				repetir = 1;
 			}
@@ -380,13 +380,13 @@ void juegoAutomatico(int f, int c){
 						break;
 				}
 				imprimirTablero(tableroMostradoB, f, c);
-			}else if(compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 0){
+			}else{
 
 				repetir = 1;
 			}
 		} while (repetir == 1);
 
-	} while (compruebaGanador(tableroMostradoA, f, c) != 0 && compruebaGanador(tableroMostradoB, f, c) != 0);
+	} while (compruebaGanador(tableroMostradoA, f, c) == 1 && compruebaGanador(tableroMostradoB, f, c) == 1);
 
 	if (compruebaGanador(tableroMostradoA, f, c) == 0){
 		printf("¡HA GANADO EL JUGADOR 1!\n");
@@ -618,14 +618,14 @@ int comprobacionEspacioParaBarco(char *t, int f, int c, int iniFila, int iniCol,
 			}
 			break;
 		case 2:
-			if ((iniFila < f && iniFila >= 0 && iniCol < c && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*iniFila+iniCol+1) == '*' && orientacion == 0){
+			if ((iniFila < f && iniFila >= 0 && iniCol < c-1 && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*iniFila+iniCol+1) == '*' && orientacion == 0){
 				salida = 1;
 			}else if((iniFila < f && iniFila >= 0 && iniCol < c && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*(iniFila-1)+iniCol) == '*' && orientacion == 1){
 				salida = 1;
 			}
 			break;
 		case 3:
-			if ((iniFila < f && iniFila >= 0 && iniCol < c && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*iniFila+iniCol+1) == '*' && *(t+c*iniFila+iniCol-1) == '*' && orientacion == 0){
+			if ((iniFila < f && iniFila >= 0 && iniCol < c-1 && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*iniFila+iniCol+1) == '*' && *(t+c*iniFila+iniCol-1) == '*' && orientacion == 0){
 				salida = 1;
 			}else if((iniFila < f && iniFila >= 0 && iniCol < c && iniCol >= 0) && *(t+c*iniFila+iniCol) == '*' && *(t+c*(iniFila-1)+iniCol) == '*' && *(t+c*(iniFila+1)+iniCol) == '*' && orientacion == 1){
 				salida = 1;
@@ -662,8 +662,8 @@ void colocarBarcosAutomaticamente(char *t, int f, int c){
 			//Coloca barcos de 1 posiciones
 			case 0:
 				if (barcos1 > 0){
-					filaColocar = rand()%f;
-					columnaColocar = rand()%c;
+					filaColocar = 1+rand()%f;
+					columnaColocar = 1+rand()%c;
 					orientacion = rand()%2;
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 1, orientacion) == 1){
 						*(t+c*filaColocar+columnaColocar) = '1';
@@ -675,8 +675,8 @@ void colocarBarcosAutomaticamente(char *t, int f, int c){
 			//Coloca barcos de 2 posiciones
 			case 1:
 				if (barcos2 > 0){
-					filaColocar = rand()%f;
-					columnaColocar = rand()%c;
+					filaColocar = 1+rand()%f;
+					columnaColocar = 1+rand()%c;
 					orientacion = rand()%2;
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 2, orientacion) == 1){
 						if (orientacion == 0){
@@ -694,8 +694,8 @@ void colocarBarcosAutomaticamente(char *t, int f, int c){
 			//Coloca barcos de 3 posicones
 			case 2:
 				if (barcos3 > 0){
-					filaColocar = rand()%f;
-					columnaColocar = rand()%c;
+					filaColocar = 1+rand()%f;
+					columnaColocar = 1+rand()%c;
 					orientacion = rand()%2;
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 3, orientacion) == 1){
 						if (orientacion == 0){
@@ -712,9 +712,7 @@ void colocarBarcosAutomaticamente(char *t, int f, int c){
 				}
 				break;
 		}
-
 	} while (barcos1 != 0 || barcos2 != 0 || barcos3 != 0);
-
 }
 
 
@@ -751,16 +749,18 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					printf("¿En que fila quieres colocar e barco?\n");
 					scanf("%d", &filaColocar);
 					printf("¿En que columna quieres colocar el barco?\n");
+					filaColocar--;
+					columnaColocar--;
 					scanf("%d", &columnaColocar);
+					
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 1, orientacion) == 1){
-						filaColocar--;
-						columnaColocar--;
 						*(t+c*filaColocar+columnaColocar) = '1';
 						imprimirTablero(t, f, c);
 						barcos1--;
 					}else{
 						printf("El barco no cabe en esa posicion\n");
 					}
+
 				}else{
 					printf("No hay mas barcos de ese ese tipo disponibles\n");
 				}
@@ -775,15 +775,14 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					printf("¿Como quieres orientarlos?\n[1] Horizontal\n[2] Vertical\n");
 					scanf("%d", &orientacion);
 					orientacion--;
+					columnaColocar--; 
+					filaColocar--;
+
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 2, orientacion) == 1){
 						if (orientacion == 0){
-							columnaColocar--; 
-							filaColocar--;
 							*(t+c*filaColocar+columnaColocar) = '2';
 							*(t+c*filaColocar+columnaColocar+1) = '2';
 						}else if (orientacion == 1){
-							columnaColocar--; 
-							filaColocar--;
 							*(t+c*(filaColocar-1)+columnaColocar) = '2';
 							*(t+c*(filaColocar)+columnaColocar) = '2';	
 						}
@@ -792,6 +791,7 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					}else{
 						printf("El barco no cabe en esa posicion\n");
 					}
+
 				}else{
 					printf("No hay mas barcos de ese ese tipo disponibles\n");
 				}	
@@ -806,16 +806,15 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					printf("¿Como quieres orientarlos?\n[1] Horizontal\n[2] Vertical\n");
 					scanf("%d", &orientacion);
 					orientacion--;
+					columnaColocar--; 
+					filaColocar--;
+
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 3, orientacion) == 1){
 						if (orientacion == 0){
-							columnaColocar--; 
-							filaColocar--;
 							*(t+c*filaColocar+columnaColocar+1) = '3';
 							*(t+c*filaColocar+columnaColocar-1) = '3';
 							*(t+c*filaColocar+columnaColocar) = '3';
 						}else if (orientacion == 1){
-							columnaColocar--; 
-							filaColocar--;
 							*(t+c*(filaColocar+1)+columnaColocar) = '3';
 							*(t+c*(filaColocar-1)+columnaColocar) = '3';
 							*(t+c*(filaColocar)+columnaColocar) = '3';
@@ -825,6 +824,7 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					}else{
 						printf("El barco no cabe en esa posicion\n");
 					}
+
 				}else{
 					printf("No hay mas barcos de ese ese tipo disponibles\n");
 				}

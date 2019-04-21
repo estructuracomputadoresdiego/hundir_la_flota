@@ -805,7 +805,7 @@ void colocarBarcosAutomaticamente(char *t, int f, int c){
 //	- filas
 //	- columnas	
 //OUTPUTS: nada
-//Coloca de forma manual 4 barcos de 1 posición, 2 de 2 posiciones y 1 de 3 posiciones en el tablero
+//Coloca de forma automatica 4 barcos de 1 posición, 2 de 2 posiciones y 1 de 3 posiciones en el tablero
 
 	int barcos1 = NUMBARCOS1;
 	int barcos2 = NUMBARCOS2;
@@ -1001,6 +1001,12 @@ void colocarBarcosManualmente(char *t, int f, int c){
  }
 
  void separacionJuegos(int c, FILE *pa){
+ //Función separacionJuegos
+//INPUTS:
+//	- columnas	
+//	- archivo de volacado de datos 
+//OUTPUTS: nada
+//Imprime en el archivo una barra de separacion en caso de jugar varias partidas en la misma ejecucion del programa
 
  	for (int i = 0; i < 8; ++i){
 		fprintf(pa, "#");

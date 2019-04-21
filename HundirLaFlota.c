@@ -176,7 +176,7 @@ void juegoManual(int f, int c){
 	inicializarTablero(tableroMostradoA, f, c);
 	inicializarTablero(tableroMostradoB, f, c);
 
-	archivo = fopen("HundirLaFlotaRegistro.txt", "at");
+	archivo = fopen("HundirLaFlotaRegistro.txt", "w");
 
 	imprimirTablero(tableroOcultoA, f, c);
 
@@ -196,7 +196,6 @@ void juegoManual(int f, int c){
 		do{
 			repetir = 0;
 			printf("\tTURNO %d JUGADOR 1\n", turno );
-			fprintf(archivo, "\tTURNO %d JUGADOR 1\n", turno);
 			printf("¿A que fila quieres disparar?\n");
 			scanf("%d", &filaDisparo);
 			filaDisparo--;
@@ -227,7 +226,8 @@ void juegoManual(int f, int c){
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
 						break;
 				}
-				turno++;
+	
+				fprintf(archivo, "\tTURNO %d JUGADOR 1\n", turno);
 				imprimirDisparoArchivo(tableroMostradoA, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoA, f, c, archivo);
 			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
@@ -272,6 +272,8 @@ void juegoManual(int f, int c){
 						break;
 				}
 				turno++;
+
+				fprintf(archivo, "\tTURNO %d JUGADOR 2\n", turno);		
 				imprimirDisparoArchivo(tableroMostradoB, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoB, f, c, archivo);
 				imprimirTablero(tableroMostradoB, f, c);
@@ -284,17 +286,17 @@ void juegoManual(int f, int c){
 	} while (compruebaGanador(tableroMostradoA, f, c) == 1 && compruebaGanador(tableroMostradoB, f, c) == 1);
 
 	if (compruebaGanador(tableroMostradoA, f, c) == 0){
-		printf("¡HA GANADO EL JUGADOR 1!\n");
-		fprintf(archivo, "¡HA GANADO EL JUGADOR 1!\n");
-		separacionJuegos(c, archivo);
+		printf("HA GANADO EL JUGADOR 1!\n");
+		fprintf(archivo, "HA GANADO EL JUGADOR 1!\n");
 
 	}else if (compruebaGanador(tableroMostradoB, f, c) == 0){
-		printf("¡HA GANADO EL JUGADOR 2!\n");
+		printf("HA GANADO EL JUGADOR 2!\n");
 		fprintf(archivo, "¡HA GANADO EL JUGADOR 2!\n");
-		separacionJuegos(c, archivo);
 
 	}
+	separacionJuegos(c, archivo);
 
+	fclose(archivo);
 	free(tableroMostradoA);
 	free(tableroMostradoB);
 	free(tableroOcultoA);
@@ -338,7 +340,7 @@ void juegoAutomatico(int f, int c){
 	inicializarTablero(tableroMostradoA, f, c);
 	inicializarTablero(tableroMostradoB, f, c);
 
-	archivo = fopen("HundirLaFlotaRegistro.txt", "at");
+	archivo = fopen("HundirLaFlotaRegistro.txt", "w");
 
 	colocarBarcosAutomaticamente(tableroOcultoA, f, c);
 	colocarBarcosAutomaticamente(tableroOcultoB, f, c);		
@@ -372,7 +374,8 @@ void juegoAutomatico(int f, int c){
 						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
 						break;
 				}
-				turno++;
+
+				fprintf(archivo, "\tTURNO %d JUGADOR 1\n", turno);
 				imprimirDisparoArchivo(tableroMostradoA, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoA, f, c, archivo);
 				imprimirTablero(tableroMostradoA, f, c);
@@ -411,6 +414,8 @@ void juegoAutomatico(int f, int c){
 						break;
 				}
 				turno++;
+
+				fprintf(archivo, "\tTURNO %d JUGADOR 2\n", turno);
 				imprimirDisparoArchivo(tableroMostradoB, filaDisparo, columnaDisparo, casillaDisparo, archivo);
 				imprimirTableroArchivo(tableroMostradoB, f, c, archivo);
 				imprimirTablero(tableroMostradoB, f, c);
@@ -423,17 +428,17 @@ void juegoAutomatico(int f, int c){
 	} while (compruebaGanador(tableroMostradoA, f, c) == 1 && compruebaGanador(tableroMostradoB, f, c) == 1);
 
 	if (compruebaGanador(tableroMostradoA, f, c) == 0){
-		printf("¡HA GANADO EL JUGADOR 1!\n");
+		printf("HA GANADO EL JUGADOR 1!\n");
 		fprintf(archivo, "¡HA GANADO EL JUGADOR 1!\n");
-		separacionJuegos(c, archivo);
 
 	}else if (compruebaGanador(tableroMostradoB, f, c) == 0){
-		printf("¡HA GANADO EL JUGADOR 2!\n");
+		printf("HA GANADO EL JUGADOR 2!\n");
 		fprintf(archivo, "¡HA GANADO EL JUGADOR 2!\n");
-		separacionJuegos(c, archivo);
 
 	}
+	separacionJuegos(c, archivo);
 
+	fclose(archivo);
 	free(tableroMostradoA);
 	free(tableroMostradoB);
 	free(tableroOcultoA);

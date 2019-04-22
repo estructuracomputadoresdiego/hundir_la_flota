@@ -4,9 +4,15 @@
 #define NUMBARCOS1 4
 #define NUMBARCOS2 2
 #define NUMBARCOS3 1
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
 
-
-void cabecera();
+void cabeceras(int cabecera);
 int menu();
 void hundirLaFlota(int opcion, int f,  int c);
 void colocarBarcosManualmente(char *t, int f, int c);
@@ -22,6 +28,7 @@ void juegoAutomatico(int f, int c);
 int compruebaDisparoRepetido(char *b, int f, int c, int posFila, int posCol);
 void imprimirDisparoArchivo(char *b, int posFila, int posCol, int casillaDisparo, FILE *pa);
 void separacionJuegos(int c, FILE *pa);
+void jugadorContraJugador(int f, int c);
 
 int main(int argc, char *argv[]){
 //Función principal. 
@@ -46,7 +53,7 @@ int main(int argc, char *argv[]){
 
 	srand(time(NULL));
 
-	cabecera();
+	cabeceras(0);
 
 	do{
 		opcion = menu();
@@ -56,25 +63,34 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-void cabecera(){
+void cabeceras(int cabecera){
 //Función cabecera
 //INPUTS: nada
 //OUTPUTs: nada
 //Muestra la caecera del programa
 
-		printf("\t\t\t      ╔╦═╦╦╦═════════╦╦╦╦══════╗\n");
-		printf("\t\t\t      ║║ ╩╬╬═╦═╦╦╦═╦═╬╬╝╠═╗╔═╦╗║\n");
-		printf("\t\t\t      ║║  ║║╩╣║║║║╩╣║║║║║║║╠╝╠╣║\n");
-		printf("\t\t\t      ║╚══╩╩═╩╩╩═╩═╩╩╩╩═╩═╝╚═╩╝║\n");
-		printf("\t\t\t      ╚════════════════════════╝\n");
-		printf("\t\t\t   ╔╦╗╔╦═════╦╦╦══╦╦══╦═╦╦══╦╦═══╗\n");
-		printf("\t\t\t   ║║╚╝╠╗╔╦═╦╝╠╬═╗║╠═╗║═╣╠═╦╣╠╦═╗║\n");
-		printf("\t\t\t   ║║╔╗║╚╝║║║║║║╠╝║╠╝║║╔╣║║╠╗╔╬╝║║\n");
-		printf("\t\t\t   ║╚╝╚╩══╩╩╩═╩╩╝.╚╩═╝╚╝╚╩═╝╚═╩═╝║\n");
-		printf("\t\t\t   ╚═════════════════════════════╝\n");
-		for (int i = 0; i < 4; ++i){
-			printf("\n");
-		}
+	switch(cabecera){
+
+		case 0:
+			printf(COLOR_YELLOW"\t\t\t      ╔╦═╦╦╦═════════╦╦╦╦══════╗\n");
+			printf("\t\t\t      ║║ ╩╬╬═╦═╦╦╦═╦═╬╬╝╠═╗╔═╦╗║\n");
+			printf("\t\t\t      ║║  ║║╩╣║║║║╩╣║║║║║║║╠╝╠╣║\n");
+			printf("\t\t\t      ║╚══╩╩═╩╩╩═╩═╩╩╩╩═╩═╝╚═╩╝║\n");
+			printf("\t\t\t      ╚════════════════════════╝\n");
+			printf("\t\t\t   ╔╦╗╔╦═════╦╦╦══╦╦══╦═╦╦══╦╦═══╗\n");
+			printf("\t\t\t   ║║╚╝╠╗╔╦═╦╝╠╬═╗║╠═╗║═╣╠═╦╣╠╦═╗║\n");
+			printf("\t\t\t   ║║╔╗║╚╝║║║║║║╠╝║╠╝║║╔╣║║╠╗╔╬╝║║\n");
+			printf("\t\t\t   ║╚╝╚╩══╩╩╩═╩╩╝.╚╩═╝╚╝╚╩═╝╚═╩═╝║\n");
+			printf("\t\t\t   ╚═════════════════════════════╝\n"COLOR_RESET);
+			for (int i = 0; i < 4; ++i){
+				printf("\n");
+			}
+			break;
+
+		case 1:
+			break;
+
+	}
 }
 
 int menu(){
@@ -122,6 +138,10 @@ void hundirLaFlota(int opcion, int f,  int c){
 			break;
 
 		case 3:
+			jugadorContraJugador(f,c);
+			break;
+
+		case 4:
 			printf("Gracias por jugar!\n");
 			break;
 	}
@@ -157,6 +177,7 @@ void juegoManual(int f, int c){
 	char* tableroMostradoB;
 	tableroMostradoB = (char*)malloc(sizeof(char)*f*c);
 
+
 	do{
 		printf("\t\t\t   ¿Como quieres colocar los barcos?\n\n");
 		printf("\t//////////////////////////////////////////////////////////////////\n");
@@ -190,6 +211,7 @@ void juegoManual(int f, int c){
 	}
 
 	printf("Ya hemos colocado los barcos, procedamos a hundirlos\n");
+
 
 	do{
 
@@ -447,6 +469,10 @@ void juegoAutomatico(int f, int c){
 
 }
 
+void jugadorContraJugador(int f, int c){
+
+	return;
+}
 
 void inicializarTablero(char *t, int f, int c){
 //Función inicializarTablero
@@ -487,14 +513,16 @@ void imprimirTablero(char *t, int f, int c){
 		printf(" ");
 	}
 
-	printf("|1\t");
+	printf("|");
+	printf(COLOR_MAGENTA"1\t");
 
 	for (int i = 1; i < c-1; ++i){
 		printf("%d\t", i+1);
 	}
 
-	printf("%d|\n", c);
-
+	printf("%d", c);
+	printf(COLOR_RESET"|\n");
+	
 	for (int i = 0; i < 8; ++i){
 		printf(" ");
 	}
@@ -505,20 +533,51 @@ void imprimirTablero(char *t, int f, int c){
 
 	//Imprime el tablero
 	for (int i = 0; i < f; ++i){
+		
+		switch(*(t+i*c)){
 
-		printf("\t|%c", *(t+i*c));
+			case '0':
+				printf("\t|"COLOR_CYAN"%c"COLOR_RESET, *(t+i*c));
+				break;
+
+			case '1':
+			case '2':
+			case '3':
+				printf("\t|"COLOR_RED"%c"COLOR_RESET, *(t+i*c));
+				break;
+
+			default:
+				printf("\t|%c", *(t+i*c));
+		}
+
 		for (int j = 1; j < c; ++j){
 
-			printf("\t%c", *(t+i*c+j));
+			switch(*(t+i*c+j)){
+
+				case '0':
+					printf(COLOR_CYAN"\t%c"COLOR_RESET , *(t+i*c+j));
+					break;
+				case '1':
+				case '2':
+				case '3':
+					printf(COLOR_RED"\t%c"COLOR_RESET, *(t+i*c+j));
+					break;
+
+				default:
+					printf("\t%c", *(t+i*c+j));
+
+			}
+
 		}
 		if (f < 10){
-		printf(" |%d|\n", i+1);
-		}else if(f > 10){
+		
+			printf(" |"COLOR_MAGENTA"%d"COLOR_RESET"|\n", i+1);
+		}else if(f >= 10){
 		
 			if (i+1 < 10){
-				printf(" | %d|\n", i+1);
+				printf(" | " COLOR_MAGENTA"%d"COLOR_RESET"|\n", i+1);
 			}else{
-				printf(" |%d|\n", i+1);
+				printf(" |" COLOR_MAGENTA"%d"COLOR_RESET"|\n", i+1);
 			}
 		}
 
@@ -599,7 +658,7 @@ void imprimirTableroArchivo(char *t, int f, int c, FILE *pa){
 		}
 		if (f < 10){
 		fprintf(pa, " |%d|\n", i+1);
-		}else if(f > 10){
+		}else if(f >= 10){
 		
 			if (i+1 < 10){
 				fprintf(pa, " | %d|\n", i+1);
@@ -608,7 +667,7 @@ void imprimirTableroArchivo(char *t, int f, int c, FILE *pa){
 			}
 		}
 
-		if (i < f-1 && f <10){
+		if (i < f-1 && f < 10){
 			fprintf(pa, "\t|");
 			for (int k = 0; k < c-1; ++k){
 				fprintf(pa, "\t");

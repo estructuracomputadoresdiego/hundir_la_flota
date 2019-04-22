@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #define NUMBARCOS1 4
 #define NUMBARCOS2 2
@@ -53,25 +54,34 @@ int main(int argc, char *argv[]){
 
 	srand(time(NULL));
 
+	FILE *archivo;
+
 	cabeceras(0);
+
+	//Borro el log de la anterior ejecucion
+	archivo = fopen("HundirLaFlotaRegistro.txt", "w");
+	fclose(archivo);
 
 	do{
 		opcion = menu();
 		hundirLaFlota(opcion, filas, columnas);
-	} while (opcion!=3);
+	} while (opcion!=4);
 
 	return 0;
 }
 
 void cabeceras(int cabecera){
 //Función cabecera
-//INPUTS: nada
+//INPUTS: el numero de la bacecera que se quiere mostrar por pantalla
 //OUTPUTs: nada
 //Muestra la caecera del programa
+
+	int opcion;
 
 	switch(cabecera){
 
 		case 0:
+			opcion = rand()%2;
 			printf(COLOR_YELLOW"\t\t\t      ╔╦═╦╦╦═════════╦╦╦╦══════╗\n");
 			printf("\t\t\t      ║║ ╩╬╬═╦═╦╦╦═╦═╬╬╝╠═╗╔═╦╗║\n");
 			printf("\t\t\t      ║║  ║║╩╣║║║║╩╣║║║║║║║╠╝╠╣║\n");
@@ -82,14 +92,48 @@ void cabeceras(int cabecera){
 			printf("\t\t\t   ║║╔╗║╚╝║║║║║║╠╝║╠╝║║╔╣║║╠╗╔╬╝║║\n");
 			printf("\t\t\t   ║╚╝╚╩══╩╩╩═╩╩╝.╚╩═╝╚╝╚╩═╝╚═╩═╝║\n");
 			printf("\t\t\t   ╚═════════════════════════════╝\n"COLOR_RESET);
-			for (int i = 0; i < 4; ++i){
-				printf("\n");
-			}
+			printf("\n\n\n\n");
+
 			break;
 
 		case 1:
+			printf(COLOR_GREEN"\t _____                                                           _   \n");
+			printf("\t(___  )                           /'\\_/`\\                       (_ )\n");
+			printf("\t    | |_   _   __    __    _      |     |  _ _  ___  _   _   _ _ | | \n");
+			printf("\t _  | ( ) ( )/'__`\\/'_ `\\/'_`\\    | (_) |/'_` /' _ `( ) ( )/'_` )| | \n");
+			printf("\t( )_| | (_) (  ___( (_) ( (_) )   | | | ( (_| | ( ) | (_) ( (_| || | \n");
+			printf("\t`\\___/`\\___/`\\____`\\__  `\\___/'   (_) (_`\\__,_(_) (_`\\___/`\\__,_(___)\n");
+			printf("\t                  ( )_) |                                            \n");
+			printf("\t                   \\___/'                                            \n"COLOR_RESET);
+			printf("\n\n\n\n");		
+
 			break;
 
+		case 2:
+			printf(COLOR_GREEN"\t _____                                                           _   \n");
+			printf("\t(___  )                           (  _  )     ( )_                      ( )_ _             \n");
+			printf("\t    | |_   _   __    __    _      | (_) |_   _| ,_)  _    ___ ___    _ _| ,_(_)  ___   _   \n");
+			printf("\t _  | ( ) ( )/'__`\\/'_ `\\/'_`\\    |  _  ( ) ( | |  /'_`\\/' _ ` _ `\\/'_` | | | |/'___)/'_`\\ \n");
+			printf("\t( )_| | (_) (  ___( (_) ( (_) )   | | | | (_) | |_( (_) | ( ) ( ) ( (_| | |_| ( (___( (_) )\n");
+			printf("\t`\\___/`\\___/`\\____`\\__  `\\___/'   (_) (_`\\___/`\\__`\\___/(_) (_) (_`\\__,_`\\__(_`\\____`\\___/'\n");
+			printf("\t                  ( )_) |                                                                  \n");
+			printf("\t                   \\___/'                                                                  \n"COLOR_RESET);
+			printf("\n\n\n\n");	
+
+			break;
+
+		case 3:
+			printf(COLOR_GREEN"\t _____                       _                               _____                       _            \n");
+			printf("\t(___  )                     ( )                             (___  )                     ( )           \n");
+			printf("\t    | |_   _   __    _ _   _| |  _   _ __     _   _  ___        | |_   _   __    _ _   _| |  _   _ __ \n");
+			printf("\t _  | ( ) ( )/'_ `\\/'_` )/'_` |/'_`\\( '__)   ( ) ( /',__)    _  | ( ) ( )/'_ `\\/'_` )/'_` |/'_`\\( '__)\n");
+			printf("\t( )_| | (_) ( (_) ( (_| ( (_| ( (_) | |      | \\_/ \\__, \\   ( )_| | (_) ( (_) ( (_| ( (_| ( (_) | |   \n");
+			printf("\t`\\___/`\\___/`\\__  `\\__,_`\\__,_`\\___/(_)      `\\___/(____/   `\\___/`\\___/`\\__  `\\__,_`\\__,_`\\___/(_)   \n");
+			printf("\t            ( )_) |                                                     ( )_) |                       \n");
+			printf("\t             \\___/'                                                      \\___/'                       \n"COLOR_RESET);
+			printf("\n\n\n\n");	
+
+			break;
 	}
 }
 
@@ -105,16 +149,17 @@ int menu(){
 		printf("\t//////////////////////////////////////////////////////////////////\n");
 		printf("\t//\t\t\t[1] Juego manual\t\t\t//\n");
 		printf("\t//\t\t\t[2] Juego automatico\t\t\t//\n");
-		printf("\t//\t\t\t[3] Salir\t\t\t\t//\n");
+		printf("\t//\t\t\t[3] Jugador vs Jugador\t\t\t//\n");
+		printf("\t//\t\t\t[4] Salir\t\t\t\t//\n");
 		printf("\t//////////////////////////////////////////////////////////////////\n\n");
 		scanf("%d", &opcion);
 
-		if (opcion < 1 || opcion > 3)
+		if (opcion < 1 || opcion > 4)
 		{
 			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
 		}
 
-	} while (opcion < 1 && opcion > 3);
+	} while (opcion < 1 && opcion > 4);
 
 
 	return opcion;
@@ -177,6 +222,7 @@ void juegoManual(int f, int c){
 	char* tableroMostradoB;
 	tableroMostradoB = (char*)malloc(sizeof(char)*f*c);
 
+	cabeceras(1);
 
 	do{
 		printf("\t\t\t   ¿Como quieres colocar los barcos?\n\n");
@@ -191,14 +237,14 @@ void juegoManual(int f, int c){
 			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
 		}
 
-	} while (opcion < 1 && opcion > 2);
+	} while (opcion < 1 || opcion > 2);
 
 	inicializarTablero(tableroOcultoA, f, c);
 	inicializarTablero(tableroOcultoB, f, c);
 	inicializarTablero(tableroMostradoA, f, c);
 	inicializarTablero(tableroMostradoB, f, c);
 
-	archivo = fopen("HundirLaFlotaRegistro.txt", "w");
+	archivo = fopen("HundirLaFlotaRegistro.txt", "at");
 
 	imprimirTablero(tableroOcultoA, f, c);
 
@@ -363,7 +409,7 @@ void juegoAutomatico(int f, int c){
 	inicializarTablero(tableroMostradoA, f, c);
 	inicializarTablero(tableroMostradoB, f, c);
 
-	archivo = fopen("HundirLaFlotaRegistro.txt", "w");
+	archivo = fopen("HundirLaFlotaRegistro.txt", "at");
 
 	colocarBarcosAutomaticamente(tableroOcultoA, f, c);
 	colocarBarcosAutomaticamente(tableroOcultoB, f, c);		
@@ -470,8 +516,238 @@ void juegoAutomatico(int f, int c){
 }
 
 void jugadorContraJugador(int f, int c){
+//Función juegoAutomatico
+// 	- INPUTS: número de filas y número de columnas del tablerro
+//	- OUTPUTS: nada
+//	- Juega de forma automática:
+//		-- Abre el archivo para escribir en él todas las salidas
+//		-- Crea los 4 tableros, los inicializa (llamando a la función inicializar tantas veces como tableros haya) y en 2 pone los barcos automáticamente
+//		-- Escribe en el archivo los tableros y las tiradas al inicio del juego
+//		-- Por turnos, cada jugador genera una fila y columna automáticamente (se indica en el archivo). Se comprueba si hay barco indicando agua o tocado (se indica en el archivo).
+//		-- Se comprueba si hay ganador. Si lo hay acaba la partida indicando quíén ha ganado en el archivo
+//		-- EXTRA: comprobar que no se ha repetido ese disparo
 
-	return;
+	int opcion, filaDisparo, columnaDisparo, repetir, turno;
+	char casillaDisparo;
+	int barcos1A, barcos1B, barcos2A, barcos2B, barcos3A, barcos3B;
+	char jugador1[30];
+	char jugador2[30];
+
+	turno = 1;
+
+	FILE *archivo;
+
+	char* tableroOcultoA;
+	tableroOcultoA = (char*)malloc(sizeof(char)*f*c);
+
+	char* tableroMostradoA;
+	tableroMostradoA = (char*)malloc(sizeof(char)*f*c);
+
+	char* tableroOcultoB;
+	tableroOcultoB = (char*)malloc(sizeof(char)*f*c);
+
+	char* tableroMostradoB;
+	tableroMostradoB = (char*)malloc(sizeof(char)*f*c);
+
+	inicializarTablero(tableroOcultoA, f, c);
+	inicializarTablero(tableroOcultoB, f, c);
+	inicializarTablero(tableroMostradoA, f, c);
+	inicializarTablero(tableroMostradoB, f, c);
+
+	archivo = fopen("HundirLaFlotaRegistro.txt", "at");
+	
+	cabeceras(3);
+
+	//Limpa el buffer
+	fgets(jugador1,30,stdin);
+
+	printf("Introduce el nombre del Jugador 1:\n");
+	fgets(jugador1,30,stdin);
+	strtok(jugador1, "\n");
+
+	printf("Introduce el nombre del Jugador 2:\n");
+	fgets(jugador2,30,stdin);
+	strtok(jugador2, "\n");
+
+	imprimirTablero(tableroOcultoA, f, c);
+
+	do{
+		printf("\t\t\t  %s ¿Como quieres colocar los barcos?\n\n", jugador1);
+		printf("\t//////////////////////////////////////////////////////////////////\n");
+		printf("\t//\t\t\t[1] De forma manual\t\t\t//\n");
+		printf("\t//\t\t\t[2] De forma automatica\t\t\t//\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n\n");
+	
+		scanf("%d", &opcion);
+
+		if (opcion < 1 || opcion > 2){
+			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
+		}else{
+
+			if (opcion == 1){
+				printf("%s, coloca tus barcos\n", jugador1);
+				colocarBarcosManualmente(tableroOcultoA, f, c);
+			}else if (opcion == 2){
+				colocarBarcosAutomaticamente(tableroOcultoA, f, c);
+			}
+		}
+	} while (opcion < 1 || opcion > 2);
+
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+	imprimirTablero(tableroOcultoB, f, c);
+	
+	do{
+		printf("\t\t\t  %s ¿Como quieres colocar los barcos?\n\n", jugador2);
+		printf("\t//////////////////////////////////////////////////////////////////\n");
+		printf("\t//\t\t\t[1] De forma manual\t\t\t//\n");
+		printf("\t//\t\t\t[2] De forma automatica\t\t\t//\n");
+		printf("\t//////////////////////////////////////////////////////////////////\n\n");
+	
+		scanf("%d", &opcion);
+
+		if (opcion < 1 || opcion > 2){
+			printf("\n\nPorfavor, introduzca una de las opciones dadas\n\n");
+		}else{
+
+			if (opcion == 1){
+				printf("%s, coloca tus barcos\n", jugador2);
+				colocarBarcosManualmente(tableroOcultoB, f, c);
+			}else if (opcion == 2){
+				colocarBarcosAutomaticamente(tableroOcultoB, f, c);
+			}
+		}
+	} while (opcion < 1 || opcion > 2);
+
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+	imprimirTablero(tableroMostradoA, f, c);
+
+	printf("Ya hemos colocado los barcos, procedamos a hundirlos\n");
+
+
+	do{
+
+		//Tirada jugador 1
+		do{
+			repetir = 0;
+			printf("\tTURNO %d %s\n", turno, jugador1);
+			printf("¿A que fila quieres disparar?\n");
+			scanf("%d", &filaDisparo);
+			filaDisparo--;
+			printf("¿A que columna quieres disparar?\n");
+			scanf("%d", &columnaDisparo);
+			columnaDisparo--;	
+
+			if (compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 1 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+				
+				*(tableroMostradoA+filaDisparo*c+columnaDisparo) = compruebaDisparo(tableroOcultoB, f, c, filaDisparo, columnaDisparo);
+				casillaDisparo = compruebaDisparo(tableroOcultoB, f, c, filaDisparo, columnaDisparo);
+				
+				switch(casillaDisparo){
+
+					case '0':
+						printf("Se ha disparado a la posision %d:%d. Mala punteria, eso es agua!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '1':
+						printf("Se ha disparado a la posision %d:%d. Le has dado a un barco de 1!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '2':
+						printf("Se ha disparado a la posision %d:%d. Le has dado a un barco de 2!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '3':
+						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+				}
+	
+				fprintf(archivo, "\tTURNO %d %s\n", turno, jugador1);
+				imprimirDisparoArchivo(tableroMostradoA, filaDisparo, columnaDisparo, casillaDisparo, archivo);
+				imprimirTableroArchivo(tableroMostradoA, f, c, archivo);
+				imprimirTablero(tableroMostradoA, f, c);
+				turno++;
+			}else if(compruebaDisparoRepetido(tableroMostradoA, f, c, filaDisparo, columnaDisparo) == 0 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+
+				printf("Ese disparo ya se ha realizado. ¡Deja en paz a esa pobre casilla!\n");
+				repetir = 1;
+			}else{
+				
+				printf("¡VAS A DESTRUIR LA TERMINAL, APUNTA DENTRO DEL TABLERO!\n");
+				repetir = 1;
+			}
+		} while (repetir == 1);
+		
+		//Tirada jugador 2
+		do{
+			repetir = 0;
+			printf("\tTURNO %d %s\n", turno, jugador2 );
+			printf("¿A que fila quieres disparar?\n");
+			scanf("%d", &filaDisparo);
+			filaDisparo--;
+			printf("¿A que columna quieres disparar?\n");
+			scanf("%d", &columnaDisparo);
+			columnaDisparo--;	
+
+			if (compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 1 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+				
+				*(tableroMostradoB+filaDisparo*c+columnaDisparo) = compruebaDisparo(tableroOcultoA, f, c, filaDisparo, columnaDisparo);
+				casillaDisparo = compruebaDisparo(tableroOcultoA, f, c, filaDisparo, columnaDisparo);
+				
+				switch(casillaDisparo){
+
+					case '0':
+						printf("Se ha disparado a la posision %d:%d. Mala punteria, eso es agua!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '1':
+						printf("Se ha disparado a la posision %d:%d. Le has dado a un barco de 1!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '2':
+						printf("Se ha disparado a la posision %d:%d. Le has dado a un barco de 2!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+
+					case '3':
+						printf("Se ha disparado a la posision %d:%d. Le has dado al barco de 3!\n", filaDisparo+1, columnaDisparo+1);
+						break;
+				}
+	
+				fprintf(archivo, "\tTURNO %d %s\n", turno, jugador2);
+				imprimirDisparoArchivo(tableroMostradoB, filaDisparo, columnaDisparo, casillaDisparo, archivo);
+				imprimirTableroArchivo(tableroMostradoB, f, c, archivo);
+				imprimirTablero(tableroMostradoB, f, c);
+				turno++;
+			}else if(compruebaDisparoRepetido(tableroMostradoB, f, c, filaDisparo, columnaDisparo) == 0 && filaDisparo < f && filaDisparo >= 0 && columnaDisparo < c && columnaDisparo >= 0){
+
+				printf("Ese disparo ya se ha realizado. ¡Deja en paz a esa pobre casilla!\n");
+				repetir = 1;
+			}else{
+				
+				printf("¡VAS A DESTRUIR LA TERMINAL, APUNTA DENTRO DEL TABLERO!\n");
+				repetir = 1;
+			}
+		} while (repetir == 1);
+
+	} while (compruebaGanador(tableroMostradoA, f, c) == 1 && compruebaGanador(tableroMostradoB, f, c) == 1);
+
+	if (compruebaGanador(tableroMostradoA, f, c) == 0){ printf("HA GANADO %s!\n",
+	jugador1); fprintf(archivo, "HA GANADO %s!\n", jugador1);
+
+	}else if (compruebaGanador(tableroMostradoB, f, c) == 0){
+		printf("HA GANADO %s!\n", jugador2);
+		fprintf(archivo, "HA GANADO %s!\n", jugador2);
+
+	}
+	separacionJuegos(c, archivo);
+
+	fclose(archivo);
+	free(tableroMostradoA);
+	free(tableroMostradoB);
+	free(tableroOcultoA);
+	free(tableroOcultoB);
+
 }
 
 void inicializarTablero(char *t, int f, int c){
@@ -970,9 +1246,9 @@ void colocarBarcosManualmente(char *t, int f, int c){
 					printf("¿En que fila quieres colocar e barco?\n");
 					scanf("%d", &filaColocar);
 					printf("¿En que columna quieres colocar el barco?\n");
+					scanf("%d", &columnaColocar);
 					filaColocar--;
 					columnaColocar--;
-					scanf("%d", &columnaColocar);
 					
 					if (comprobacionEspacioParaBarco(t, f,c ,filaColocar, columnaColocar, 1, orientacion) == 1){
 						*(t+c*filaColocar+columnaColocar) = '1';
